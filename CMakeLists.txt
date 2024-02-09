@@ -40,7 +40,8 @@ else()
           pimpl.h
           filedownloader.h filedownloader.cpp
           filesaver.h filesaver.cpp
-
+          User.h
+          user.h
         )
     endif()
 endif()

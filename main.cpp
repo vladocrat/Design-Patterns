@@ -18,8 +18,9 @@ int main(int argc, char *argv[])
     auto thread1 = pool->get();
     auto thread2 = pool->get();
 
-    FileDownloader downloader;
-    auto reply = downloader.download(QUrl{"ftp://localhost:8082/test.txt"});
+    auto downloader = FileDownloader::instance();
+    downloader->setUser({"user", "password"});
+    auto reply = downloader->download(QUrl{"ftp://localhost:8082/test.txt"});
 
     QObject::connect(reply, &QNetworkReply::finished, [reply]()
     {
