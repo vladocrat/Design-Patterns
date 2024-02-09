@@ -1,6 +1,7 @@
 #include "usercontroller.h"
 
 #include "user.h"
+#include "authcontroller.h"
 
 struct UserController::impl_t
 {
@@ -15,17 +16,28 @@ UserController* UserController::instance() noexcept
 
 QString UserController::username() const noexcept
 {
-
+    return impl().user.username;
 }
 
 QString UserController::password() const noexcept
 {
-
+    return impl().user.password;
 }
 
 UserController::UserController()
 {
     createImpl();
+
+    QObject::connect(AuthController::instance(), &AuthController::loggedIn, this, [this](const User& user)
+    {
+        impl().user = user;
+    });
+
+    QObject::connect(AuthController::instance(), &AuthController::loggedOut, this, [this]()
+    {
+        impl().user.username = "";
+        impl().user.password = "";
+    });
 }
 
 UserController::~UserController()

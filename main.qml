@@ -38,12 +38,11 @@ Window {
                     topbar.loggedIn = false;
                     topbar.username = "";
                     topbar.password = "";
-
                 }
             }
 
             onLoginClicked: {
-                AuthController.login("user", "user");
+                AuthController.login("user", "user"); //! TODO placeholder
             }
 
             onLogoutClicked: {
