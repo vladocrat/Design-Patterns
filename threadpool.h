@@ -2,8 +2,6 @@
 
 #include <QThread>
 #include <QObject>
-#include <QVector>
-#include <QMutex>
 
 #include <memory>
 
@@ -15,11 +13,13 @@ class ThreadPool final : public QObject
 public:
     static ThreadPool* instance() noexcept;
 
+    void initialize(size_t poolSize) noexcept;
     [[nodiscard]] std::shared_ptr<QThread> get() noexcept;
-    void release(std::shared_ptr<QThread>& thread) noexcept;
 
 private:
-    ThreadPool() = default;
+    void release(const std::shared_ptr<QThread>& thread) noexcept;
+
+    ThreadPool();
     ~ThreadPool() = default;
     ThreadPool(const ThreadPool&) = delete;
     ThreadPool(ThreadPool&&) = delete;

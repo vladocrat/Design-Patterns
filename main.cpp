@@ -1,12 +1,21 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#include "threadpool.h"
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+
+    auto pool = ThreadPool::instance();
+    pool->initialize(4);
+    auto thread = pool->get();
+    auto thread1 = pool->get();
+    auto thread2 = pool->get();
+    qDebug() << (thread2 == nullptr);
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

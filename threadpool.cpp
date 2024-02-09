@@ -1,11 +1,9 @@
 #include "threadpool.h"
 
 #include <QMutexLocker>
-
-namespace Constants
-{
-constexpr static const int POOL_SIZE = 5; //! TODO other way?
-} //! Constants
+#include <QDebug>
+#include <QVector>
+#include <QMutex>
 
 struct ThreadPool::impl_t
 {
@@ -19,6 +17,21 @@ ThreadPool* ThreadPool::instance() noexcept
     return &pl;
 }
 
+void ThreadPool::initialize(size_t poolSize) noexcept
+{
+    impl().pool.resize(static_cast<int>(poolSize));
+
+    for (int i = 0; i < poolSize; i++)
+    {
+        impl().pool[i] = std::make_shared<QThread>();
+    }
+}
+
+ThreadPool::ThreadPool()
+{
+    createImpl();
+}
+
 std::shared_ptr<QThread> ThreadPool::get() noexcept
 {
     QMutexLocker locker(&impl().poolLock);
@@ -29,17 +42,19 @@ std::shared_ptr<QThread> ThreadPool::get() noexcept
     }
 
     auto resource = impl().pool.last();
+
+    QObject::connect(resource.get(), &QThread::finished, this, [this, resource](){
+        qDebug() << "thread finished, releasing...";
+        release(resource);
+    });
+
     impl().pool.removeLast();
     return resource;
 }
 
-void ThreadPool::release(std::shared_ptr<QThread>& thread) noexcept
+void ThreadPool::release(const std::shared_ptr<QThread>& thread) noexcept
 {
     impl().pool.append(thread);
 }
 
-ThreadPool::ThreadPool()
-{
-    createImpl();
-}
 
