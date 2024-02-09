@@ -7,8 +7,8 @@
 class UserController final : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged FINAL)
-    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged FINAL)
+    Q_PROPERTY(QString username READ username NOTIFY usernameChanged FINAL)
+    Q_PROPERTY(QString password READ password NOTIFY passwordChanged FINAL)
 public:
     static UserController* instance() noexcept;
 
