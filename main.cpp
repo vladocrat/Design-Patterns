@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 
 #include "threadpool.h"
+#include "filedownloader.h"
+#include "filesaver.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +17,24 @@ int main(int argc, char *argv[])
     auto thread = pool->get();
     auto thread1 = pool->get();
     auto thread2 = pool->get();
-    qDebug() << (thread2 == nullptr);
+
+    FileDownloader downloader;
+    auto reply = downloader.download(QUrl{"ftp://localhost:8082/test.txt"});
+
+    QObject::connect(reply, &QNetworkReply::finished, [reply]()
+    {
+        auto data = reply->readAll();
+
+        FileSaver saver;
+
+        if (!saver.save(data, "test.txt"))
+        {
+            qDebug() << "failed to save file";
+        }
+
+        qDebug() << "saved successfully";
+    });
+
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

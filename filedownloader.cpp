@@ -1,6 +1,7 @@
 #include "filedownloader.h"
 
 #include <QNetworkAccessManager>
+#include <QAuthenticator>
 
 struct FileDownloader::impl_t
 {
@@ -8,6 +9,17 @@ struct FileDownloader::impl_t
 };
 
 FileDownloader::FileDownloader()
+{
+    createImpl();
+
+    QObject::connect(&impl().qnam, &QNetworkAccessManager::authenticationRequired, this, [](QNetworkReply* reply, QAuthenticator* authenticator)
+    {
+        authenticator->setUser("user");
+        authenticator->setPassword("password");
+    });
+}
+
+FileDownloader::~FileDownloader()
 {
 
 }

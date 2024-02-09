@@ -12,6 +12,7 @@ class FileDownloader final : public QObject
     Q_OBJECT
 public:
     FileDownloader();
+    ~FileDownloader();
 
     QNetworkReply* download(const QUrl& url) noexcept;
 
