@@ -36,6 +36,9 @@ else()
     else()
         add_executable(Design-Patterns
           ${PROJECT_SOURCES}
+          threadpool.h threadpool.cpp
+          pimpl.h
+
         )
     endif()
 endif()
