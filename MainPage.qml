@@ -10,11 +10,11 @@ Item {
     StackLayout {
         id: stack
 
-        Item {
-            // Content for the first tab
-        }
-        Item {
-            // Content for the second tab
+        anchors.fill: parent
+
+        FileDownloader {
+           Layout.fillHeight: true
+           Layout.fillWidth: true
         }
     }
 }

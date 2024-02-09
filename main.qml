@@ -53,6 +53,7 @@ Window {
         TabBar {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.maximumHeight: 50
 
             TabButton {
                 text: "FTP file downloader"
