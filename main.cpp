@@ -5,12 +5,21 @@
 #include "filedownloader.h"
 #include "filesaver.h"
 
+#include "authcontroller.h"
+
+void registerTypes()
+{
+    AuthController::registerType();
+}
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+
+    registerTypes();
 
     // auto pool = ThreadPool::instance();
     // pool->initialize(4);

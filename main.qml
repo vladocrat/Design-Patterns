@@ -21,6 +21,10 @@ Window {
             Layout.minimumHeight: 30
 
             Component.onCompleted: console.log(height)
+
+            Connections {
+
+            }
         }
 
         TabBar {
