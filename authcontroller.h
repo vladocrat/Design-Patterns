@@ -11,11 +11,14 @@ public:
     static AuthController* instance() noexcept;
 
     Q_INVOKABLE void login(const QString& username, const QString& password) noexcept;
+    Q_INVOKABLE void logout() noexcept;
 
     static void registerType();
 
 signals:
     void loggedIn(const User&);
+    void loggedOut();
+    void dataChanged(const QString&, const QString&);
 
 private:
     AuthController();

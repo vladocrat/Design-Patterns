@@ -6,6 +6,7 @@
 #include "filesaver.h"
 
 #include "authcontroller.h"
+#include "user.h"
 
 void registerTypes()
 {

@@ -6,7 +6,6 @@
 #include <QNetworkReply>
 
 #include "pimpl.h"
-#include "user.h"
 
 class FileDownloader final : public QObject
 {
@@ -15,7 +14,6 @@ public:
     static FileDownloader* instance() noexcept;
 
     [[nodiscard]] QNetworkReply* download(const QUrl& url) noexcept;
-    void setUser(const User&) noexcept;
 
 private:
     FileDownloader();

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import AuthController 1.0
 
 Window {
     id: root
@@ -15,6 +16,8 @@ Window {
         anchors.fill: parent
 
         TopBar {
+            id: topbar
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.maximumHeight: 30
@@ -23,7 +26,28 @@ Window {
             Component.onCompleted: console.log(height)
 
             Connections {
+                target: AuthController
 
+                function onDataChanged(username, password) {
+                    topbar.loggedIn = true;
+                    topbar.username = username;
+                    topbar.password = password;
+                }
+
+                function onLoggedOut() {
+                    topbar.loggedIn = false;
+                    topbar.username = "";
+                    topbar.password = "";
+
+                }
+            }
+
+            onLoginClicked: {
+                AuthController.login("user", "user");
+            }
+
+            onLogoutClicked: {
+                AuthController.logout();
             }
         }
 

@@ -6,6 +6,11 @@ Item {
     id: root
 
     property bool loggedIn: false
+    property string username: "username"
+    property string password: "password"
+
+    signal loginClicked();
+    signal logoutClicked();
 
     RowLayout {
         anchors.fill: parent
@@ -19,7 +24,14 @@ Item {
         Text {
             Layout.alignment: Qt.AlignRight
 
-            text: "test"
+            text: root.username
+            visible: root.loggedIn
+        }
+
+        Text {
+            Layout.alignment: Qt.AlignRight
+
+            text: root.password
             visible: root.loggedIn
         }
 
@@ -30,6 +42,8 @@ Item {
 
             text: "Logout"
             visible: root.loggedIn
+
+            onClicked: root.logoutClicked();
         }
 
         Button {
@@ -39,6 +53,8 @@ Item {
 
             text: "Login"
             visible: !root.loggedIn
+
+            onClicked: root.loginClicked();
         }
     }
 }

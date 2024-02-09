@@ -5,5 +5,6 @@
 struct User
 {
     QString username;
-    QString password;
+    QString password;    
 };
+

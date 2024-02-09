@@ -42,6 +42,7 @@ else()
           filesaver.h filesaver.cpp
           user.h
           authcontroller.h authcontroller.cpp
+          usercontroller.h usercontroller.cpp
         )
     endif()
 endif()
