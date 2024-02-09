@@ -38,6 +38,8 @@ else()
           ${PROJECT_SOURCES}
           threadpool.h threadpool.cpp
           pimpl.h
+          filedownloader.h filedownloader.cpp
+          filesaver.h filesaver.cpp
 
         )
     endif()
