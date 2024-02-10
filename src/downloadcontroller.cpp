@@ -3,6 +3,7 @@
 #include <QQmlEngine>
 #include <QFileInfo>
 
+#include "downloadworker.h"
 #include "threadpool.h"
 
 DownloadController* DownloadController::instance() noexcept

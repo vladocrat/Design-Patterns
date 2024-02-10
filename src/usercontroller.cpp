@@ -16,16 +16,6 @@ UserController* UserController::instance() noexcept
     return &uc;
 }
 
-QString UserController::username() const noexcept
-{
-    return impl().user.username;
-}
-
-QString UserController::password() const noexcept
-{
-    return impl().user.password;
-}
-
 UserController::UserController()
 {
     createImpl();
@@ -45,4 +35,14 @@ UserController::UserController()
 UserController::~UserController()
 {
 
+}
+
+QString UserController::username() const noexcept
+{
+    return impl().user.username;
+}
+
+QString UserController::password() const noexcept
+{
+    return impl().user.password;
 }

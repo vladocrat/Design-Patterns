@@ -4,6 +4,8 @@
 #include <QMutex>
 #include <QUrl>
 
+#include "pimpl.h"
+
 class DownloadWorker final : public QRunnable
 {
 public:
@@ -14,8 +16,6 @@ protected:
     void run() override;
 
 private:
-    QMutex m_lock;
-    QString m_fileUrl;
-    QString m_path;
+    DECLARE_PIMPL
 };
 
