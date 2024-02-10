@@ -5,56 +5,66 @@
 #include <QVector>
 #include <QMutex>
 
-
-struct ThreadPool::impl_t
-{
-    QMutex poolLock;
-    QVector<std::shared_ptr<QThread>> pool;
-};
-
 ThreadPool* ThreadPool::instance() noexcept
 {
     static ThreadPool pl;
     return &pl;
 }
 
+ThreadPool::~ThreadPool()
+{
+    stop();
+    for (const auto& thread : qAsConst(m_pool))
+    {
+        thread->quit();
+        thread->wait();
+    }
+}
+
 void ThreadPool::initialize(size_t poolSize) noexcept
 {
-    impl().pool.resize(static_cast<int>(poolSize));
+    m_pool.resize(static_cast<int>(poolSize));
 
     for (int i = 0; i < poolSize; i++)
     {
-        impl().pool[i] = std::make_shared<DownloadWorker>();
+        m_pool[i] = new QThread();
+
+        QObject::connect(m_pool[i], &QThread::started, this, [this]()
+        {
+            while (m_isRunning && !m_workQueue.isEmpty())
+            {
+                QMutexLocker locker(&m_poolLock);
+
+                auto task = m_workQueue.dequeue();
+                task->run();
+
+                //m_waitCondition.wait(&m_poolLock);
+            }
+        });
+
+        m_pool[i]->start();
     }
 }
 
-ThreadPool::ThreadPool()
+void ThreadPool::start()
 {
-    createImpl();
+    QMutexLocker locker(&m_poolLock);
+
+    m_isRunning = true;
+    m_waitCondition.wakeAll();
 }
 
-std::shared_ptr<QThread> ThreadPool::get() noexcept
+void ThreadPool::stop()
 {
-    QMutexLocker locker(&impl().poolLock);
-
-    if (impl().pool.isEmpty())
-    {
-        return nullptr;
-    }
-
-    auto resource = impl().pool.last();
-
-    QObject::connect(resource.get(), &QThread::finished, this, [this, resource](){
-        qDebug() << "thread finished, releasing...";
-        release(resource);
-    });
-
-    impl().pool.removeLast();
-    return resource;
+    QMutexLocker locker(&m_poolLock);
+    m_isRunning = false;
 }
 
-void ThreadPool::release(const std::shared_ptr<QThread>& thread) noexcept
+void ThreadPool::enqueue(QRunnable* task)
 {
-    impl().pool.append(thread);
-    emit threadFreed();
+    QMutexLocker locker(&m_poolLock);
+
+    m_workQueue.enqueue(task);
+    m_waitCondition.wakeOne();
 }
+

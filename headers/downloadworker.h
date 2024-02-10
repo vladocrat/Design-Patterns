@@ -1,23 +1,21 @@
 #pragma once
 
-#include <QThread>
+#include <QRunnable>
+#include <QMutex>
+#include <QUrl>
 
-#include "pimpl.h"
-
-class DownloadWorker final : public QThread
+class DownloadWorker final : public QRunnable
 {
-    Q_OBJECT
 public:
-    DownloadWorker(std::function<void()>);
+    DownloadWorker(const QString& fileUrl, const QString& path);
     ~DownloadWorker();
-
-signals:
-    void finished();
 
 protected:
     void run() override;
 
 private:
-    DECLARE_PIMPL
+    QMutex m_lock;
+    QString m_fileUrl;
+    QString m_path;
 };
 
