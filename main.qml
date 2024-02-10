@@ -41,8 +41,17 @@ Window {
                 }
             }
 
+            LoginPopup {
+                id: loginPage
+
+                onLoginClicked: {
+                    AuthController.login(loginPage.username, loginPage.password);
+                    loginPage.close();
+                }
+            }
+
             onLoginClicked: {
-                AuthController.login("user", "password"); //! TODO placeholder
+                loginPage.open();
             }
 
             onLogoutClicked: {

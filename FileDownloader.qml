@@ -46,7 +46,7 @@ Item {
                     var component = Qt.createComponent("InputField.qml");
                     if (component.status === Component.Ready) {
                         var inputField = component.createObject(layout, {
-                                                                    "Layout.preferredHeight": 30,
+                                                                    "Layout.preferredHeight": 35,
                                                                     "Layout.fillWidth": true});
                     } else {
                         console.error("Error loading component:", component.errorString());
@@ -66,6 +66,8 @@ Item {
                 anchors.fill: parent
                 anchors.rightMargin: 50
                 anchors.leftMargin: 50
+                anchors.topMargin: 10
+                anchors.bottomMargin: 10
             }
         }
 
