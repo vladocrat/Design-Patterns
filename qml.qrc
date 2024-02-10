@@ -4,6 +4,6 @@
         <file>MainPage.qml</file>
         <file>TopBar.qml</file>
         <file>FileDownloader.qml</file>
-        <file>Rect.qml</file>
+        <file>InputField.qml</file>
     </qresource>
 </RCC>

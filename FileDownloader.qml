@@ -32,9 +32,11 @@ Item {
                 text: "+"
 
                 onClicked: {
-                    var component = Qt.createComponent("Rect.qml");
+                    var component = Qt.createComponent("InputField.qml");
                     if (component.status === Component.Ready) {
-                        var inputField = component.createObject(layout, {width: 20, height: 20});
+                        var inputField = component.createObject(layout, {
+                                                                    "Layout.preferredHeight": 30,
+                                                                    "Layout.fillWidth": true});
                     } else {
                         console.error("Error loading component:", component.errorString());
                     }
@@ -42,11 +44,27 @@ Item {
             }
         }
 
-        ColumnLayout {
-            id: layout
-
+        ScrollView {
             Layout.fillHeight: true
             Layout.fillWidth: true
+            clip: true
+
+            ColumnLayout {
+                id: layout
+
+                anchors.fill: parent
+                anchors.rightMargin: 50
+                anchors.leftMargin: 50
+            }
+        }
+
+        Button {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: 50
+            Layout.preferredWidth: 150
+            Layout.bottomMargin: 10
+
+            text: "Download"
         }
     }
 }
