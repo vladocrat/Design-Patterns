@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QMutex>
 
+
 struct ThreadPool::impl_t
 {
     QMutex poolLock;
@@ -23,7 +24,7 @@ void ThreadPool::initialize(size_t poolSize) noexcept
 
     for (int i = 0; i < poolSize; i++)
     {
-        impl().pool[i] = std::make_shared<QThread>();
+        impl().pool[i] = std::make_shared<DownloadWorker>();
     }
 }
 
@@ -57,5 +58,3 @@ void ThreadPool::release(const std::shared_ptr<QThread>& thread) noexcept
     impl().pool.append(thread);
     emit threadFreed();
 }
-
-
