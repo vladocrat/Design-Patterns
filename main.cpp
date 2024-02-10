@@ -7,6 +7,7 @@
 
 #include "authcontroller.h"
 #include "downloadcontroller.h"
+#include "usercontroller.h"
 #include "user.h"
 
 void registerTypes()
@@ -22,6 +23,10 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
+    app.setOrganizationName("designpatterns");
+    app.setOrganizationDomain("designpatterns.com");
+
+    UserController::instance();
     registerTypes();
 
     // auto pool = ThreadPool::instance();

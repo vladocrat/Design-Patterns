@@ -1,5 +1,7 @@
 #include "usercontroller.h"
 
+#include <QDebug>
+
 #include "user.h"
 #include "authcontroller.h"
 

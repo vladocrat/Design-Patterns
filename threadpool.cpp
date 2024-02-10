@@ -55,6 +55,7 @@ std::shared_ptr<QThread> ThreadPool::get() noexcept
 void ThreadPool::release(const std::shared_ptr<QThread>& thread) noexcept
 {
     impl().pool.append(thread);
+    emit threadFreed();
 }
 
 

@@ -42,7 +42,7 @@ Window {
             }
 
             onLoginClicked: {
-                AuthController.login("user", "user"); //! TODO placeholder
+                AuthController.login("user", "password"); //! TODO placeholder
             }
 
             onLogoutClicked: {

@@ -1,8 +1,19 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
+import QtQuick.Dialogs 1.3
+
+import DownloadController 1.0
 
 Item {
+    id: root
+
+    QtObject {
+        id: internal
+
+        property string path: ""
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -58,6 +69,27 @@ Item {
             }
         }
 
+        FileDialog {
+            id: fileDialog
+
+            selectFolder: true
+            folder: shortcuts.home
+            visible: false
+
+            onAccepted: internal.path = fileDialog.folder;
+        }
+
+        Button {
+            Layout.alignment: Qt.AlignCenter
+            Layout.preferredHeight: 50
+            Layout.preferredWidth: 150
+            Layout.bottomMargin: 10
+
+            text: "Choose path"
+
+            onClicked: fileDialog.open();
+        }
+
         Button {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: 50
@@ -67,7 +99,14 @@ Item {
             text: "Download"
 
             onClicked: {
+                var texts = [];
+                for (var i =  0; i < layout.children.length; ++i) {
+                    console.log(layout.children[i].text);
+                    texts.push(layout.children[i].text);
+                }
 
+                console.log(internal.path);
+                DownloadController.download(texts, internal.path);
             }
         }
     }

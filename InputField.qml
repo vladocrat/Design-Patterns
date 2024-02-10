@@ -4,7 +4,11 @@ import QtQuick.Controls 2.15
 Item {
     id: root
 
+    property alias text: textField.text
+
     TextField {
+        id: textField
+
         anchors.fill: parent
 
         placeholderText: "Your FTP URI"

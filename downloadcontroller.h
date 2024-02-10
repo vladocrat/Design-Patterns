@@ -8,7 +8,7 @@ class DownloadController final : public QObject
 public:
     static DownloadController* instance() noexcept;
 
-    Q_INVOKABLE void download(QVariantList) noexcept;
+    Q_INVOKABLE void download(QVariantList, const QString& path) const noexcept;
 
     static void registerType() noexcept;
 

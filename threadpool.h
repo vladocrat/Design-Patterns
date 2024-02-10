@@ -16,6 +16,9 @@ public:
     void initialize(size_t poolSize) noexcept;
     [[nodiscard]] std::shared_ptr<QThread> get() noexcept;
 
+signals:
+    void threadFreed();
+
 private:
     void release(const std::shared_ptr<QThread>& thread) noexcept;
 
