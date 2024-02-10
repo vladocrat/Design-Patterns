@@ -43,6 +43,7 @@ else()
           user.h
           authcontroller.h authcontroller.cpp
           usercontroller.h usercontroller.cpp
+          downloadcontroller.h downloadcontroller.cpp
         )
     endif()
 endif()

@@ -6,11 +6,13 @@
 #include "filesaver.h"
 
 #include "authcontroller.h"
+#include "downloadcontroller.h"
 #include "user.h"
 
 void registerTypes()
 {
     AuthController::registerType();
+    DownloadController::registerType();
 }
 
 int main(int argc, char *argv[])

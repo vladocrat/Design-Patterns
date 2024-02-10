@@ -65,6 +65,10 @@ Item {
             Layout.bottomMargin: 10
 
             text: "Download"
+
+            onClicked: {
+
+            }
         }
     }
 }

@@ -6,5 +6,11 @@ Item {
 
     TextField {
         anchors.fill: parent
+
+        placeholderText: "Your FTP URI"
+
+        validator: RegExpValidator {
+            regExp: /^ftp:\/\/(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(:(\d{1,5}))?(\/[^\s]*)?$/
+        }
     }
 }
