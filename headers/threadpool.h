@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <QRunnable>
 
 #include "pimpl.h"
 
@@ -12,10 +11,14 @@ public:
     static ThreadPool* instance() noexcept;
 
     void initialize(size_t poolSize) noexcept;
+    size_t size() const noexcept;
 
-    void start() noexcept;
-    void stop() noexcept;
-    void enqueue(QRunnable* task) noexcept;
+    void setSavePath(const QString& path) noexcept;
+
+    void addTask(const QString& fileName, const QByteArray& data);
+
+signals:
+    void taskCompleted(QString fileName);
 
 private:
     ThreadPool();

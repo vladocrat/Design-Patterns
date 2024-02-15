@@ -6,5 +6,6 @@
         <file>FileDownloader.qml</file>
         <file>InputField.qml</file>
         <file>LoginPopup.qml</file>
+        <file>ProgressPopup.qml</file>
     </qresource>
 </RCC>

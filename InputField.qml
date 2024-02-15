@@ -6,6 +6,8 @@ Item {
     id: root
 
     property alias text: textField.text
+    property alias placeholder: textField.placeholderText
+    property alias field: textField
 
     RowLayout {
         anchors.fill: parent

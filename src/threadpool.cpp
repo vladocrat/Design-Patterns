@@ -7,14 +7,16 @@
 #include <QQueue>
 #include <QWaitCondition>
 #include <QThread>
+#include <QFileInfo>
+
+#include "saver.h"
 
 struct ThreadPool::impl_t
 {
-    bool m_isRunning;
-    QWaitCondition m_waitCondition;
-    QMutex m_poolLock;
-    QVector<QThread*> m_pool;
-    QQueue<QRunnable*> m_workQueue;
+    size_t busy {0};
+    size_t size {0};
+    QString savePath;
+    QQueue<QPair<QString, QByteArray>> requests;
 };
 
 ThreadPool* ThreadPool::instance() noexcept
@@ -30,59 +32,74 @@ ThreadPool::ThreadPool()
 
 ThreadPool::~ThreadPool()
 {
-    stop();
 
-    for (const auto& thread : qAsConst(impl().m_pool))
-    {
-        thread->quit();
-        thread->wait();
-    }
 }
 
 void ThreadPool::initialize(size_t poolSize) noexcept
 {
-    impl().m_pool.resize(static_cast<int>(poolSize));
+    impl().size = poolSize;
+}
 
-    for (int i = 0; i < poolSize; i++)
+size_t ThreadPool::size() const noexcept
+{
+    return impl().size;
+}
+
+void ThreadPool::setSavePath(const QString& path) noexcept
+{
+    impl().savePath = path;
+}
+
+void ThreadPool::addTask(const QString& fileName, const QByteArray& data)
+{
+    if (impl().busy >= impl().size)
     {
-        impl().m_pool[i] = new QThread();
-
-        QObject::connect(impl().m_pool[i], &QThread::started, this, [this]()
-        {
-            while (impl().m_isRunning && !impl().m_workQueue.isEmpty())
-            {
-                QMutexLocker locker(&impl().m_poolLock);
-
-                auto task = impl().m_workQueue.dequeue();
-                task->run();
-
-                //m_waitCondition.wait(&m_poolLock);
-            }
-        });
-
-        impl().m_pool[i]->start();
+        impl().requests.push_back({fileName, data});
+        return;
     }
-}
 
-void ThreadPool::start() noexcept
-{
-    QMutexLocker locker(&impl().m_poolLock);
+    Saver* saver = new Saver;
+    saver->setData(impl().savePath + "/" + fileName, data);
 
-    impl().m_isRunning = true;
-    impl().m_waitCondition.wakeAll();
-}
+    QThread* thread = new QThread;
+    thread->start();
 
-void ThreadPool::stop() noexcept
-{
-    QMutexLocker locker(&impl().m_poolLock);
+    QObject::connect(saver, &Saver::error, this, [this, saver, thread](const QString& error)
+    {
+        --impl().busy;
 
-    impl().m_isRunning = false;
-}
+        emit taskCompleted(saver->taskName());
 
-void ThreadPool::enqueue(QRunnable* task) noexcept
-{
-    QMutexLocker locker(&impl().m_poolLock);
+        saver->deleteLater(); //! TODO(check if removed from another thread)
+        thread->quit();
 
-    impl().m_workQueue.enqueue(task);
-    impl().m_waitCondition.wakeOne();
+        if (impl().busy < impl().size && !impl().requests.empty())
+        {
+            auto [name, data_] = impl().requests.takeFirst();
+            addTask(name, data_);
+            return;
+        }
+    }, Qt::QueuedConnection);
+
+    QObject::connect(saver, &Saver::saved, this, [this, saver, thread] ()
+    {
+        --impl().busy;
+
+        emit taskCompleted(saver->taskName());
+
+        saver->deleteLater(); //! TODO(check if removed from another thread)
+        thread->quit();
+
+        if (impl().busy < impl().size && !impl().requests.empty())
+        {
+            auto [name, data_] = impl().requests.takeFirst();
+            addTask(name, data_);
+            return;
+        }
+    }, Qt::QueuedConnection);
+
+    saver->moveToThread(thread);
+    ++impl().busy;
+
+    QMetaObject::invokeMethod(saver, &Saver::save, Qt::QueuedConnection);
 }

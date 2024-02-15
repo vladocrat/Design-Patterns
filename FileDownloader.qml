@@ -26,6 +26,7 @@ Item {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredHeight: 50
                 Layout.preferredWidth: 50
+
                 text: "-"
 
                 onClicked: {
@@ -51,6 +52,18 @@ Item {
                     } else {
                         console.error("Error loading component:", component.errorString());
                     }
+                }
+            }
+
+            TextField {
+                id: threadNum
+
+                Layout.alignment: Qt.AlignCenter
+                Layout.preferredHeight: 50
+                Layout.preferredWidth: 50
+
+                validator: RegExpValidator {
+                    regExp: /^[-+]?\d+$/
                 }
             }
         }
@@ -92,6 +105,10 @@ Item {
             onClicked: fileDialog.open();
         }
 
+        ProgressPopup {
+            id: progressScreen
+        }
+
         Button {
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: 50
@@ -107,8 +124,8 @@ Item {
                     texts.push(layout.children[i].text);
                 }
 
-                console.log(internal.path);
-                DownloadController.download(texts, internal.path);
+                progressScreen.open();
+                DownloadController.download(texts, internal.path, threadNum.text);
             }
         }
     }
