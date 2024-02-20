@@ -23,13 +23,19 @@ Item {
                 SplitView.maximumWidth: root.width * 0.5
             }
 
-            MouseArea {
-                id: mouseArea
-
+            Rectangle {
                 SplitView.fillHeight: true
                 SplitView.fillWidth: true
 
-                hoverEnabled: true
+                border.width: 1
+
+                MouseArea {
+                    id: mouseArea
+
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                }
             }
         }
 

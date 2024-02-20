@@ -15,6 +15,8 @@ Window {
     ColumnLayout {
         anchors.fill: parent
 
+        spacing : 0
+
         TopBar {
             id: topbar
 
