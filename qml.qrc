@@ -7,5 +7,11 @@
         <file>InputField.qml</file>
         <file>LoginPopup.qml</file>
         <file>ProgressPopup.qml</file>
+        <file>Editor.qml</file>
+        <file>EditorMenu.qml</file>
+        <file>EditorMenuButton.qml</file>
+        <file>static/circle.svg</file>
+        <file>static/rectangle.svg</file>
+        <file>static/triangle.svg</file>
     </qresource>
 </RCC>

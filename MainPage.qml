@@ -16,5 +16,15 @@ Item {
            Layout.fillHeight: true
            Layout.fillWidth: true
         }
+
+        Item {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
+
+        Editor {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+        }
     }
 }

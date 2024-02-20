@@ -69,6 +69,16 @@ Window {
 
                 onClicked: main.currentIndex = 0;
             }
+
+            TabButton {
+                text: "placeholder"
+            }
+
+            TabButton {
+                text: "Figure editor"
+
+                onClicked: main.currentIndex = 2;
+            }
         }
 
         MainPage {
