@@ -2,22 +2,29 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
-Button {
+RadioButton {
     id: root
 
     property alias source: img.source
     property alias caption: caption.text
 
-    implicitHeight: 80
+    implicitHeight: 90
+
+    indicator: Rectangle {
+        anchors.centerIn: parent
+
+        color: "transparent"
+    }
 
     background: Rectangle {
         anchors.fill: parent
 
+        color: root.checked ? "light grey" : "white"
         border.width: 1
     }
 
-    contentItem: Rectangle {
-        anchors.fill: parent
+    contentItem: Item {
+        anchors.centerIn: parent
         anchors.margins: 10
 
         ColumnLayout {
