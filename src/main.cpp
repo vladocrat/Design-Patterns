@@ -4,11 +4,15 @@
 #include "authcontroller.h"
 #include "downloadcontroller.h"
 #include "usercontroller.h"
+#include "figurecontroller.h"
+#include "figuretype.h"
 
 void registerTypes()
 {
     AuthController::registerType();
     DownloadController::registerType();
+    FigureController::registerType();
+    FigureType::registerType();
 }
 
 int main(int argc, char *argv[])

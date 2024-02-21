@@ -1,12 +1,14 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import FigureType 1.0
 
 RadioButton {
     id: root
 
     property alias source: img.source
     property alias caption: caption.text
+    property int type: -1
 
     implicitHeight: 90
 

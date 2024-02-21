@@ -13,5 +13,7 @@
         <file>static/circle.svg</file>
         <file>static/rectangle.svg</file>
         <file>static/triangle.svg</file>
+        <file>EditorBottomBar.qml</file>
+        <file>static/pencil.svg</file>
     </qresource>
 </RCC>
