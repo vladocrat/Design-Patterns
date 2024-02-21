@@ -6,6 +6,7 @@
 
 #include "circle.h"
 #include "rectangle.h"
+#include "triangle.h"
 #include "figuretype.h"
 
 namespace Internal
@@ -21,8 +22,7 @@ Movable* createItem(FigureType::Value t)
     case FigureType::Value::Rectangle:
         return new Rectangle;
     case FigureType::Value::Triangle:
-        Q_UNIMPLEMENTED();
-        return nullptr; //! TODO
+        return new Triangle;
     case FigureType::Value::None:
         return nullptr; //! TODO Throw error?
     default:

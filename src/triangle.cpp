@@ -1,14 +1,14 @@
-#include "circle.h"
+#include "triangle.h"
 
 #include <QPainter>
 
-struct Circle::impl_t
+struct Triangle::impl_t
 {
     float x;
     float y;
 };
 
-Circle::Circle(QQuickPaintedItem* parent)
+Triangle::Triangle(QQuickPaintedItem* parent)
 {
     qDebug() << Q_FUNC_INFO;
     createImpl();
@@ -17,37 +17,38 @@ Circle::Circle(QQuickPaintedItem* parent)
     setSize(QSize(100, 100));
 }
 
-Circle::~Circle()
+Triangle::~Triangle()
 {
 
 }
 
-void Circle::setBoardX(float x)
+void Triangle::setBoardX(float x)
 {
     impl().x = x;
     setX(impl().x);
 }
 
-void Circle::setBoardY(float y)
+void Triangle::setBoardY(float y)
 {
     impl().y = y;
     setY(impl().y);
 }
 
-void Circle::paint(QPainter* painter)
+void Triangle::paint(QPainter* painter)
 {
     qDebug() << Q_FUNC_INFO;
     painter->setRenderHint(QPainter::Antialiasing);
-    QRectF rect(0, 0, 100, 100);
-    painter->drawEllipse(rect);
+    QPolygonF triangle;
+    triangle << QPointF(width() /  2,  0) << QPointF(0, height()) << QPointF(width(), height());
+    painter->drawPolygon(triangle);
 }
 
-void Circle::mousePressEvent(QMouseEvent* event)
+void Triangle::mousePressEvent(QMouseEvent* event)
 {
     qDebug() << Q_FUNC_INFO;
 }
 
-void Circle::mouseMoveEvent(QMouseEvent* event)
+void Triangle::mouseMoveEvent(QMouseEvent* event)
 {
     qDebug() << Q_FUNC_INFO;
     qDebug() << impl().x << " " << impl().y;

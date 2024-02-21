@@ -5,12 +5,12 @@
 #include "pimpl.h"
 #include "movable.h"
 
-class Circle : public Movable
+class Triangle : public Movable
 {
     Q_OBJECT
 public:
-    explicit Circle(QQuickPaintedItem* parent = nullptr);
-    ~Circle() override;
+    explicit Triangle(QQuickPaintedItem* parent = nullptr);
+    ~Triangle() override;
 
     void paint(QPainter* painter) override;
 
@@ -23,4 +23,5 @@ protected:
 
 private:
     DECLARE_PIMPL
+
 };
