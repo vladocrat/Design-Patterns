@@ -36,7 +36,6 @@ Item {
 
                     anchors.fill: parent
 
-                    //enabled: objMenu.chosenType != FigureType.None
                     hoverEnabled: true
 
                     onClicked: {
