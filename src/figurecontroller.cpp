@@ -3,13 +3,13 @@
 #include <QQuickPaintedItem>
 #include <QQmlEngine>
 #include <deque>
-#include <list>
 
 #include "circle.h"
 #include "rectangle.h"
 #include "triangle.h"
 #include "figuretype.h"
 #include "history.h"
+#include "boardstate.h"
 
 namespace Internal
 {
@@ -37,16 +37,15 @@ struct FigureController::impl_t
 {
     std::deque<Movable*> items;
     History history;
-    Movable* lastChosenObj { nullptr };
+    Movable* lastChosenObj   { nullptr };
+    BoardState* currentState { nullptr };
 };
 
 FigureController::FigureController()
 {
     createImpl();
 
-    QObject::connect(this, &FigureController::objectsChanged, this, [this]() {
-        qDebug() << impl().items.size();
-    });
+    QObject::connect(this, &FigureController::objectsChanged, this, &FigureController::saveState);
 }
 
 FigureController::~FigureController()
@@ -73,6 +72,8 @@ void FigureController::addItem(int t, float x, float y)
         emit menuOpened();
     });
 
+    QObject::connect(item, &Movable::moved, this, &FigureController::saveState);
+
     item->setBoardX(x);
     item->setBoardY(y);
 
@@ -95,9 +96,22 @@ void FigureController::remove()
     emit objectsChanged();
 }
 
+void FigureController::saveState()
+{
+    impl().history.put(new BoardState{ impl().items });
+}
+
 void FigureController::undo()
 {
+    if (impl().history.isEmpty())
+    {
+        return;
+    }
 
+    auto state = impl().history.pop();
+    impl().items = state->restore();
+
+    emit objectsChanged();
 }
 
 void FigureController::redo()
@@ -115,7 +129,6 @@ QList<QObject*> FigureController::objects() const
         list.append(element);
     }
 
-    qDebug() << "list.size()" << list.size();
     return list;
 }
 

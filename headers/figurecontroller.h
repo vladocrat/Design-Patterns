@@ -13,12 +13,16 @@ public:
 
     Q_INVOKABLE void addItem(int t, float x, float y);
     Q_INVOKABLE void remove();
+
     Q_INVOKABLE void undo();
     Q_INVOKABLE void redo();
 
     QList<QObject*> objects() const;
 
     static void registerType();
+
+private slots:
+    void saveState();
 
 signals:
     void objectsChanged();
