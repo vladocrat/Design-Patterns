@@ -23,6 +23,28 @@ Item {
 
         spacing: 1
 
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.maximumHeight: 60
+            Layout.minimumHeight: 60
+            implicitHeight: 30
+
+            spacing: 0
+
+            Button {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                text: "<-"
+            }
+
+            Button {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+
+                text: "->"
+            }
+        }
 
         EditorMenuButton {
             Layout.fillWidth: true

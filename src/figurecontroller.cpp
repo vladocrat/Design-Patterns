@@ -24,7 +24,7 @@ Movable* createItem(FigureType::Value t)
     case FigureType::Value::Triangle:
         return new Triangle;
     case FigureType::Value::None:
-        return nullptr; //! TODO Throw error?
+        return nullptr;
     default:
         Q_UNREACHABLE();
     }
@@ -60,6 +60,8 @@ void FigureController::addItem(int t, float x, float y)
 {
     qDebug() << Q_FUNC_INFO;
     auto item = Internal::createItem(static_cast<FigureType::Value>(t));
+
+    if (!item) return;
 
     item->setBoardX(x);
     item->setBoardY(y);

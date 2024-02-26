@@ -7,8 +7,9 @@ import AuthController 1.0
 Window {
     id: root
 
-    width: 640
-    height: 480
+    minimumWidth: 920
+    minimumHeight: 600
+
     visible: true
     title: qsTr("Design Patterns")
 
