@@ -46,6 +46,12 @@ void Triangle::paint(QPainter* painter)
 void Triangle::mousePressEvent(QMouseEvent* event)
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (event->button() == Qt::MouseButton::RightButton)
+    {
+        emit openMenu(this);
+        return;
+    }
 }
 
 void Triangle::mouseMoveEvent(QMouseEvent* event)

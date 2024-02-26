@@ -45,14 +45,16 @@ void Circle::paint(QPainter* painter)
 void Circle::mousePressEvent(QMouseEvent* event)
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (event->button() == Qt::MouseButton::RightButton)
+    {
+        emit openMenu(this);
+        return;
+    }
 }
 
 void Circle::mouseMoveEvent(QMouseEvent* event)
 {
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << impl().x << " " << impl().y;
-    qDebug() << event->x() << " " << event->y();
-
     auto diffY = event->y() - height() / 2;
     auto diffX = event->x() - width() / 2;
 

@@ -12,6 +12,9 @@ public:
     static FigureController* instance();
 
     Q_INVOKABLE void addItem(int t, float x, float y);
+    Q_INVOKABLE void remove();
+    Q_INVOKABLE void undo();
+    Q_INVOKABLE void redo();
 
     QList<QObject*> objects() const;
 
@@ -19,6 +22,7 @@ public:
 
 signals:
     void objectsChanged();
+    void menuOpened();
 
 private:
     FigureController();

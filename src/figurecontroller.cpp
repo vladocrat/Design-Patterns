@@ -3,11 +3,13 @@
 #include <QQuickPaintedItem>
 #include <QQmlEngine>
 #include <deque>
+#include <list>
 
 #include "circle.h"
 #include "rectangle.h"
 #include "triangle.h"
 #include "figuretype.h"
+#include "history.h"
 
 namespace Internal
 {
@@ -34,6 +36,8 @@ Movable* createItem(FigureType::Value t)
 struct FigureController::impl_t
 {
     std::deque<Movable*> items;
+    History history;
+    Movable* lastChosenObj { nullptr };
 };
 
 FigureController::FigureController()
@@ -63,12 +67,42 @@ void FigureController::addItem(int t, float x, float y)
 
     if (!item) return;
 
+    QObject::connect(item, &Movable::openMenu, this, [this](Movable* item)
+    {
+        impl().lastChosenObj = item;
+        emit menuOpened();
+    });
+
     item->setBoardX(x);
     item->setBoardY(y);
 
     QQmlEngine::setObjectOwnership(item, QQmlEngine::CppOwnership);
     impl().items.push_back(item);
     emit objectsChanged();
+}
+
+void FigureController::remove()
+{
+    auto item = std::find(impl().items.begin(), impl().items.end(), impl().lastChosenObj);
+
+    if (item == impl().items.end())
+    {
+        return;
+    }
+
+    impl().items.erase(item);
+
+    emit objectsChanged();
+}
+
+void FigureController::undo()
+{
+
+}
+
+void FigureController::redo()
+{
+
 }
 
 QList<QObject*> FigureController::objects() const
