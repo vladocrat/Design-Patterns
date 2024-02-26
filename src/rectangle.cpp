@@ -43,6 +43,12 @@ void Rectangle::setBoardY(float y)
 void Rectangle::mousePressEvent(QMouseEvent* event)
 {
     qDebug() << Q_FUNC_INFO;
+
+    if (event->button() == Qt::MouseButton::RightButton)
+    {
+        emit openMenu(this);
+        return;
+    }
 }
 
 void Rectangle::mouseMoveEvent(QMouseEvent* event)

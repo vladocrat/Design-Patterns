@@ -8,4 +8,7 @@ class Movable : public QQuickPaintedItem
 public:
     virtual void setBoardX(float) = 0;
     virtual void setBoardY(float) = 0;
+
+signals:
+    void openMenu(Movable*);
 };

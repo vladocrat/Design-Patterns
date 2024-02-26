@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import FigureType 1.0
+import FigureController 1.0
 
 Item {
     id: root
@@ -36,6 +37,10 @@ Item {
                 Layout.fillWidth: true
 
                 text: "<-"
+
+                onClicked: {
+                    FigureController.undo();
+                }
             }
 
             Button {
@@ -43,6 +48,10 @@ Item {
                 Layout.fillWidth: true
 
                 text: "->"
+
+                onClicked: {
+                    FigureController.redo();
+                }
             }
         }
 

@@ -44,9 +44,33 @@ Item {
                 }
 
                 Item {
+                    id: figureData
+
                     anchors.fill: parent
 
                     data: FigureController.objects
+                }
+
+                Connections {
+                    target: FigureController
+
+                    function onMenuOpened() {
+                        menu.popup();
+                    }
+                }
+
+                Menu {
+                    id: menu
+
+                    modal: true
+
+                    MenuItem {
+                        text: "Remove"
+
+                        onTriggered: {
+                            FigureController.remove();
+                        }
+                    }
                 }
             }
         }
