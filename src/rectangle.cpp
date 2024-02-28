@@ -53,13 +53,6 @@ void Rectangle::mousePressEvent(QMouseEvent* event)
 
 void Rectangle::mouseMoveEvent(QMouseEvent* event)
 {
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << impl().x << " " << impl().y;
-    qDebug() << event->x() << " " << event->y();
-
-    auto lastX = x();
-    auto lastY = y();
-
     auto diffY = event->y() - height() / 2;
     auto diffX = event->x() - width() / 2;
 
@@ -83,16 +76,14 @@ void Rectangle::mouseMoveEvent(QMouseEvent* event)
     {
         setBoardY(resY);
     }
+}
 
-    if (std::abs(lastX - resX) >= Constants::moveThreshold)
+void Rectangle::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::MouseButton::RightButton)
     {
-        emit moved();
         return;
     }
 
-    if (std::abs(lastY - resY) >= Constants::moveThreshold)
-    {
-        emit moved();
-        return;
-    }
+    emit moved(this);
 }

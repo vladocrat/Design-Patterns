@@ -17,6 +17,6 @@ public:
     virtual void setBoardY(float) = 0;
 
 signals:
-    void moved();
+    void moved(Movable*);
     void openMenu(Movable*);
 };
