@@ -12,8 +12,20 @@ Rectangle::Rectangle(QQuickPaintedItem* parent)
 {
     createImpl();
 
+    m_type = FigureType::Value::Rectangle;
+
     setAcceptedMouseButtons(Qt::AllButtons);
     setSize(QSize(100, 100));
+}
+
+Rectangle::Rectangle(const Rectangle& other)
+{
+    createImpl();
+
+    m_type = FigureType::Value::Rectangle;
+
+    impl().x = other.impl().x;
+    impl().y = other.impl().y;
 }
 
 Rectangle::~Rectangle()
@@ -80,6 +92,8 @@ void Rectangle::mouseMoveEvent(QMouseEvent* event)
 
 void Rectangle::mouseReleaseEvent(QMouseEvent* event)
 {
+    qDebug() << Q_FUNC_INFO;
+
     if (event->button() == Qt::MouseButton::RightButton)
     {
         return;

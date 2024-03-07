@@ -10,9 +10,15 @@ public:
     History();
     ~History();
 
-    [[nodiscard]] bool isEmpty() const noexcept;
-    [[nodiscard]] BoardState* pop() noexcept;
-    void put(BoardState* state) noexcept;
+    [[nodiscard]] bool undoIsEmpty() const noexcept;
+    [[nodiscard]] bool redoIsEmpty() const noexcept;
+
+    [[nodiscard]] BoardState* popUndo(BoardState* currentState) noexcept;
+    void putUndo(BoardState* state) noexcept;
+
+    [[nodiscard]] BoardState* popRedo(BoardState* currentState) noexcept;
+    void putRedo(BoardState* state) noexcept;
+
     void clear();
 
 private:

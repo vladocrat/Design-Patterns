@@ -13,6 +13,8 @@ Triangle::Triangle(QQuickPaintedItem* parent)
     qDebug() << Q_FUNC_INFO;
     createImpl();
 
+    m_type = FigureType::Value::Triangle;
+
     setAcceptedMouseButtons(Qt::AllButtons);
     setSize(QSize(100, 100));
 }
@@ -56,10 +58,6 @@ void Triangle::mousePressEvent(QMouseEvent* event)
 
 void Triangle::mouseMoveEvent(QMouseEvent* event)
 {
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << impl().x << " " << impl().y;
-    qDebug() << event->x() << " " << event->y();
-
     auto diffY = event->y() - height() / 2;
     auto diffX = event->x() - width() / 2;
 
@@ -83,4 +81,16 @@ void Triangle::mouseMoveEvent(QMouseEvent* event)
     {
         setBoardY(resY);
     }
+}
+
+void Triangle::mouseReleaseEvent(QMouseEvent* event)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (event->button() == Qt::MouseButton::RightButton)
+    {
+        return;
+    }
+
+    emit moved(this);
 }
