@@ -4,6 +4,8 @@
 
 #include "pimpl.h"
 
+class Movable;
+
 class FigureController : public QObject
 {
     Q_OBJECT
@@ -21,8 +23,9 @@ public:
 
     static void registerType();
 
-private slots:
+public slots:
     void saveState();
+    void openMenu(Movable* item);
 
 signals:
     void objectsChanged();

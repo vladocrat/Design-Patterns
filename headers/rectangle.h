@@ -8,6 +8,7 @@ class Rectangle : public Movable
     Q_OBJECT
 public:
     explicit Rectangle(QQuickPaintedItem* parent = nullptr);
+    Rectangle(const Rectangle&);
     ~Rectangle() override;
 
     void paint(QPainter* painter) override;

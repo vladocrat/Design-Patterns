@@ -11,14 +11,19 @@ constexpr static const size_t MAX_QUEUE_SIZE { 5 };
 
 struct History::impl_t
 {
-    std::deque<BoardState*> queue;
+    std::deque<BoardState*> undoQueue;
+    std::deque<BoardState*> redoQueue;
 };
 
 History::History()
 {
     createImpl();
 
-    impl().queue.push_back(new BoardState);
+    putUndo(new BoardState);
+
+    qDebug() << Q_FUNC_INFO;
+    qDebug() << "impl.undoQueue.size()" <<impl().undoQueue.size();
+    qDebug() << "impl().redoQueue.size()" << impl().redoQueue.size();
 }
 
 History::~History()
@@ -26,44 +31,69 @@ History::~History()
 
 }
 
-bool History::isEmpty() const noexcept
+bool History::undoIsEmpty() const noexcept
 {
-    return impl().queue.empty();
+    return impl().undoQueue.empty();
 }
 
-BoardState* History::pop() noexcept
+bool History::redoIsEmpty() const noexcept
 {
-    if (impl().queue.empty())
+    return impl().redoQueue.empty();
+}
+
+BoardState* History::popUndo(BoardState* currentState) noexcept
+{
+    if (impl().undoQueue.empty())
     {
         return nullptr;
     }
 
-    impl().queue.pop_back();
-
-    if (impl().queue.empty())
+    if (impl().undoQueue.size() == 1)
     {
-        impl().queue.push_back(new BoardState);
+        return impl().undoQueue.back();
     }
 
-    return impl().queue.back();
+    putRedo(currentState);
+    impl().undoQueue.pop_back();
+
+    return new BoardState { impl().undoQueue.back()->restore() };
 }
 
-void History::put(BoardState* state) noexcept
+void History::putUndo(BoardState* state) noexcept
 {
-    if (state->isEmpty())
+    if (impl().undoQueue.size() == Constants::MAX_QUEUE_SIZE)
     {
-        return;
+        impl().undoQueue.pop_front();
     }
 
-    if (impl().queue.size() > Constants::MAX_QUEUE_SIZE)
+    impl().undoQueue.push_back(state);
+}
+
+BoardState* History::popRedo(BoardState* currentState) noexcept
+{
+    if (impl().redoQueue.empty())
     {
-        impl().queue.pop_front();
+        return nullptr;
     }
 
-    impl().queue.push_back(state);
+    auto state = impl().redoQueue.back();
+    impl().redoQueue.pop_back();
+    putUndo(state);
+
+    return state;
+}
+
+void History::putRedo(BoardState* state) noexcept
+{
+    if (impl().redoQueue.size() == Constants::MAX_QUEUE_SIZE)
+    {
+        impl().redoQueue.pop_front();
+    }
+
+    impl().redoQueue.push_back(state);
 }
 
 void History::clear()
 {
-    impl().queue.clear();
+    impl().undoQueue.clear();
 }

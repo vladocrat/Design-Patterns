@@ -4,34 +4,10 @@
 #include <QQmlEngine>
 #include <deque>
 
-#include "circle.h"
-#include "rectangle.h"
-#include "triangle.h"
 #include "figuretype.h"
 #include "history.h"
 #include "boardstate.h"
-
-namespace Internal
-{
-Movable* createItem(FigureType::Value t)
-{
-    qDebug() << t;
-
-    switch (t)
-    {
-    case FigureType::Value::Circle:
-        return new Circle;
-    case FigureType::Value::Rectangle:
-        return new Rectangle;
-    case FigureType::Value::Triangle:
-        return new Triangle;
-    case FigureType::Value::None:
-        return nullptr;
-    default:
-        Q_UNREACHABLE();
-    }
-}
-} //! Internal
+#include "figurefactory.h"
 
 struct FigureController::impl_t
 {
@@ -44,8 +20,6 @@ struct FigureController::impl_t
 FigureController::FigureController()
 {
     createImpl();
-
-    QObject::connect(this, &FigureController::objectsChanged, this, &FigureController::saveState);
 }
 
 FigureController::~FigureController()
@@ -62,16 +36,12 @@ FigureController* FigureController::instance()
 void FigureController::addItem(int t, float x, float y)
 {
     qDebug() << Q_FUNC_INFO;
-    auto item = Internal::createItem(static_cast<FigureType::Value>(t));
+
+    auto item = FigureFactory::create(static_cast<FigureType::Value>(t));
 
     if (!item) return;
 
-    QObject::connect(item, &Movable::openMenu, this, [this](Movable* item)
-    {
-        impl().lastChosenObj = item;
-        emit menuOpened();
-    });
-
+    QObject::connect(item, &Movable::openMenu, this, &FigureController::openMenu);
     QObject::connect(item, &Movable::moved, this, &FigureController::saveState);
 
     item->setBoardX(x);
@@ -80,6 +50,7 @@ void FigureController::addItem(int t, float x, float y)
     QQmlEngine::setObjectOwnership(item, QQmlEngine::CppOwnership);
     impl().items.push_back(item);
     emit objectsChanged();
+    saveState();
 }
 
 void FigureController::remove()
@@ -94,21 +65,28 @@ void FigureController::remove()
     impl().items.erase(item);
 
     emit objectsChanged();
+    saveState();
 }
 
 void FigureController::saveState()
 {
-    impl().history.put(new BoardState{ impl().items });
+    impl().history.putUndo(new BoardState{ impl().items });
+}
+
+void FigureController::openMenu(Movable* item)
+{
+    impl().lastChosenObj = item;
+    emit menuOpened();
 }
 
 void FigureController::undo()
 {
-    if (impl().history.isEmpty())
+    if (impl().history.undoIsEmpty())
     {
         return;
     }
 
-    auto state = impl().history.pop();
+    auto state = impl().history.popUndo(new BoardState{ impl().items });
     impl().items = state->restore();
 
     emit objectsChanged();
@@ -116,12 +94,25 @@ void FigureController::undo()
 
 void FigureController::redo()
 {
+    if (impl().history.redoIsEmpty())
+    {
+        return;
+    }
 
+    auto state = impl().history.popRedo(new BoardState{ impl().items });
+
+    if (!state)
+    {
+        return;
+    }
+
+    impl().items = state->restore();
+
+    emit objectsChanged();
 }
 
 QList<QObject*> FigureController::objects() const
 {
-    qDebug() << Q_FUNC_INFO;
     QList<QObject*> list;
 
     for (const auto& element : impl().items)

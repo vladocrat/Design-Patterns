@@ -13,6 +13,8 @@ Circle::Circle(QQuickPaintedItem* parent)
     qDebug() << Q_FUNC_INFO;
     createImpl();
 
+    m_type = FigureType::Value::Circle;
+
     setAcceptedMouseButtons(Qt::AllButtons);
     setSize(QSize(100, 100));
 }
@@ -78,4 +80,16 @@ void Circle::mouseMoveEvent(QMouseEvent* event)
     {
         setBoardY(resY);
     }
+}
+
+void Circle::mouseReleaseEvent(QMouseEvent* event)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (event->button() == Qt::MouseButton::RightButton)
+    {
+        return;
+    }
+
+    emit moved(this);
 }
