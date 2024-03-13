@@ -17,7 +17,7 @@ Item {
            Layout.fillWidth: true
         }
 
-        Item {
+        IndustryStructure {
             Layout.fillHeight: true
             Layout.fillWidth: true
         }

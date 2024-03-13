@@ -15,5 +15,6 @@
         <file>static/triangle.svg</file>
         <file>EditorBottomBar.qml</file>
         <file>static/pencil.svg</file>
+        <file>IndustryStructure.qml</file>
     </qresource>
 </RCC>

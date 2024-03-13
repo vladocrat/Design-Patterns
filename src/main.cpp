@@ -6,6 +6,8 @@
 #include "usercontroller.h"
 #include "figurecontroller.h"
 #include "figuretype.h"
+#include "divisionmodel.h"
+#include "divisioncontroller.h"
 
 void registerTypes()
 {
@@ -13,6 +15,8 @@ void registerTypes()
     DownloadController::registerType();
     FigureController::registerType();
     FigureType::registerType();
+    DivisionModel::registerType();
+    DivisionController::registerType();
 }
 
 int main(int argc, char *argv[])

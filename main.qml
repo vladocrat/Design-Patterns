@@ -74,7 +74,9 @@ Window {
             }
 
             TabButton {
-                text: "placeholder"
+                text: "Industry structure"
+
+                onClicked: main.currentIndex = 1;
             }
 
             TabButton {
