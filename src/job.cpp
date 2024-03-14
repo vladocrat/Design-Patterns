@@ -5,12 +5,20 @@
 struct Job::impl_t
 {
     QString name;
-    uint32_t payment { 0 };
+    double payment { 0.0 };
 };
 
 Job::Job()
 {
     createImpl();
+}
+
+Job::Job(const QString& name, const double& payment)
+{
+    createImpl();
+
+    impl().name = name;
+    impl().payment = payment;
 }
 
 Job::~Job()
@@ -30,7 +38,7 @@ QString Job::name() const
     return impl().name;
 }
 
-uint32_t Job::payment() const
+double Job::payment() const
 {
     return impl().payment;
 }

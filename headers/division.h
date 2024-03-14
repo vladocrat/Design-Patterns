@@ -8,12 +8,16 @@
 
 class Job;
 
-class Division final : public QObject
+class Division : public QObject
 {
     Q_OBJECT
 public:
     Division();
     ~Division();
+
+    void setCode(uint32_t code);
+    void setName(const QString& name);
+    void setJobs(const QVector<Job*>& jobs);
 
     [[nodiscard]] uint32_t code() const;
     [[nodiscard]] QString name() const;

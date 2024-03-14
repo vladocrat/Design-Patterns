@@ -4,6 +4,7 @@
 
 #include "divisionmodel.h"
 #include "division.h"
+#include "job.h"
 
 struct DivisionController::impl_t
 {
@@ -39,5 +40,9 @@ DivisionModel* DivisionController::model()
 
 void DivisionController::add()
 {
-    impl().model->addDivision(new Division);
+    auto d = new Division;
+    d->setCode(20);
+    d->setName("test");
+    d->setJobs({new Job{"new job", 10.0}});
+    impl().model->addDivision(d);
 }

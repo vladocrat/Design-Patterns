@@ -39,6 +39,20 @@ DivisionModel::DivisionModel()
     createImpl();
 
     QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
+
+    auto salesDivison = new Division;
+    salesDivison->setCode(1);
+    salesDivison->setName("Sales");
+    salesDivison->setJobs({new Job{"work", 2.0}});
+
+    impl().list.push_back(salesDivison);
+
+    auto marketingDivision = new Division;
+    marketingDivision->setCode(2);
+    marketingDivision->setName("Marketings");
+    marketingDivision->setJobs({new Job{"marketing work", 59.23}});
+
+    impl().list.push_back(marketingDivision);
 }
 
 DivisionModel::~DivisionModel()
@@ -61,10 +75,7 @@ int DivisionModel::rowCount(const QModelIndex& parent = QModelIndex()) const
 
 QVariant DivisionModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid())
-    {
-        return {};
-    }
+    qDebug() << Q_FUNC_INFO;
 
     if (index.row() < 0 || index.row() >= impl().list.count())
     {
@@ -81,9 +92,9 @@ QVariant DivisionModel::data(const QModelIndex& index, int role) const
     case DivisionModel::Roles::Name:
         return division->name();
     case DivisionModel::Roles::JobName:
-        return 1;//jobs[index.row()]->name();
+        return jobs[0]->name();
     case DivisionModel::Roles::JobPayment:
-        return 2; //jobs[index.row()]->payment();
+        return jobs[0]->payment();
     default:
         Q_UNREACHABLE();
     }

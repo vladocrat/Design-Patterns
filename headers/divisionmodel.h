@@ -1,12 +1,12 @@
 #pragma once
 
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 
 #include "pimpl.h"
 
 class Division;
 
-class DivisionModel final : public QAbstractListModel
+class DivisionModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
@@ -22,7 +22,7 @@ public:
     DivisionModel();
     ~DivisionModel();
 
-    int columnCount(const QModelIndex &parent) const override;
+    int columnCount(const QModelIndex& parent) const override;
     int rowCount(const QModelIndex& parent) const override;
     QVariant data(const QModelIndex& index, int role) const override;
     QHash<int, QByteArray> roleNames() const override;

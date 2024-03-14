@@ -16,5 +16,7 @@
         <file>EditorBottomBar.qml</file>
         <file>static/pencil.svg</file>
         <file>IndustryStructure.qml</file>
+        <file>Timetable.qml</file>
+        <file>TimetableDelegate.qml</file>
     </qresource>
 </RCC>

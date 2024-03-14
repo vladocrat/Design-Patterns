@@ -12,14 +12,26 @@ struct Division::impl_t
 Division::Division()
 {
     createImpl();
-
-    for (int i = 0; i < 10; i++)
-        impl().jobs.push_back(new Job{});
 }
 
 Division::~Division()
 {
 
+}
+
+void Division::setCode(uint32_t code)
+{
+    impl().code = code;
+}
+
+void Division::setName(const QString& name)
+{
+    impl().name = name;
+}
+
+void Division::setJobs(const QVector<Job*>& jobs)
+{
+    impl().jobs = jobs;
 }
 
 uint32_t Division::code() const
