@@ -7,6 +7,7 @@ struct Division::impl_t
     uint32_t code { 0 };
     QString name;
     QVector<Job*> jobs;
+    QVector<Division*> subdivisions;
 };
 
 Division::Division()
@@ -16,7 +17,17 @@ Division::Division()
 
 Division::~Division()
 {
+    for (auto division : qAsConst(impl().subdivisions))
+    {
+        division->deleteLater();
+    }
+    impl().subdivisions.clear();
 
+    for (auto job : qAsConst(impl().jobs))
+    {
+        job->deleteLater();
+    }
+    impl().jobs.clear();
 }
 
 void Division::setCode(uint32_t code)
@@ -34,6 +45,17 @@ void Division::setJobs(const QVector<Job*>& jobs)
     impl().jobs = jobs;
 }
 
+void Division::setSubdivisions(QVector<Division*> subdivisions)
+{
+    impl().subdivisions = subdivisions;
+}
+
+void Division::clearSubDivs()
+{
+    impl().jobs.clear();
+    impl().subdivisions.clear();
+}
+
 uint32_t Division::code() const
 {
     return impl().code;
@@ -46,7 +68,11 @@ QString Division::name() const
 
 const QVector<Job*>& Division::jobs() const
 {
-    assert(!impl().jobs.isEmpty());
     return impl().jobs;
+}
+
+const QVector<Division*>& Division::subdivisions() const
+{
+    return impl().subdivisions;
 }
 

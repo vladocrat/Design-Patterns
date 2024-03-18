@@ -16,6 +16,8 @@ public:
 
     Q_INVOKABLE DivisionModel* model();
     Q_INVOKABLE void add();
+    Q_INVOKABLE void getDivision(const QString& divisionCode);
+    Q_INVOKABLE void removeDivision(const QString& divisionCode);
 
 private:
     DivisionController();

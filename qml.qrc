@@ -18,5 +18,6 @@
         <file>IndustryStructure.qml</file>
         <file>Timetable.qml</file>
         <file>TimetableDelegate.qml</file>
+        <file>DivisionsControlButtons.qml</file>
     </qresource>
 </RCC>

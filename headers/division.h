@@ -18,10 +18,13 @@ public:
     void setCode(uint32_t code);
     void setName(const QString& name);
     void setJobs(const QVector<Job*>& jobs);
+    void setSubdivisions(QVector<Division*> subdivisions);
+    void clearSubDivs();
 
     [[nodiscard]] uint32_t code() const;
     [[nodiscard]] QString name() const;
     [[nodiscard]] const QVector<Job*>& jobs() const;
+    [[nodiscard]] const QVector<Division*>& subdivisions() const;
 
 private:
     DECLARE_PIMPL

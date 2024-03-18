@@ -46,3 +46,29 @@ void DivisionController::add()
     d->setJobs({new Job{"new job", 10.0}});
     impl().model->addDivision(d);
 }
+
+void DivisionController::getDivision(const QString& divisionCode)
+{
+    bool ok;
+    auto code = divisionCode.toInt(&ok);
+
+    if (!ok)
+    {
+        return;
+    }
+
+    impl().model->displayDivision(code);
+}
+
+void DivisionController::removeDivision(const QString& divisionCode)
+{
+    bool ok;
+    auto code = divisionCode.toInt(&ok);
+
+    if (!ok)
+    {
+        return;
+    }
+
+    impl().model->removeDivision(code);
+}
